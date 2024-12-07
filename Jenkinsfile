@@ -17,6 +17,7 @@ pipeline {
             steps {
                 // Set up Python environment and install dependencies
                 sh '''
+                python3 --version
                 python3 -m venv $VIRTUAL_ENV
                 source $VIRTUAL_ENV/bin/activate
                 pip install --upgrade pip
