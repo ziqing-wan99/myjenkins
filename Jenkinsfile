@@ -1,8 +1,8 @@
-pipeline {
-    agent any
+pipeline { // Starts the Jenkins pipeline script.
+    agent any // Specifies that the pipeline can run on any available Jenkins agent.
 
     environment {
-        VIRTUAL_ENV = '.venv'
+        VIRTUAL_ENV = '.venv' // Sets the virtual environment directory name to .venv
     }
 
     stages {
@@ -32,6 +32,7 @@ pipeline {
                 sh '''
                 source $VIRTUAL_ENV/bin/activate
                 pytest --html=report.html --self-contained-html
+                pytest --alluredir=allure-results
                 '''
             }
         }
@@ -40,6 +41,16 @@ pipeline {
             steps {
                 // Archive test reports in Jenkins
                 archiveArtifacts artifacts: 'report.html', fingerprint: true
+                archiveArtifacts artifacts: 'allure-results/**/*', fingerprint: true
+            }
+        }
+        stage('Generate Allure Report') {
+            steps {
+                // Use the Allure plugin to generate and publish the report
+                allure([
+                    reportBuildPolicy: 'ALWAYS',
+                    results: [[path: 'allure-results']]
+                ])
             }
         }
     }
