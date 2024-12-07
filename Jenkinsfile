@@ -9,7 +9,7 @@ pipeline {
         stage('Clone Repository') {
             steps {
                 // Checkout code from Git
-                git branch: 'main', url: 'https://github.com/your-repo/selenium-pytest-automation.git'
+                git branch: 'main', url: 'https://github.com/ziqing-wan99/myjenkins.git'
             }
         }
 
